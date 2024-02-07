@@ -14,7 +14,7 @@ fn replace_backslashes<S: Serializer>(
     match path {
         Some(value) => value
             .to_string_lossy()
-            .replace("\\", "/")
+            .replace('\\', "/")
             .serialize(serializer),
 
         None => serializer.serialize_none(),
@@ -76,7 +76,7 @@ impl<'a> Instruction<'a> {
     pub fn add_to_tree(instance: &Instance, path: PathBuf) -> Self {
         Instruction::AddToTree {
             name: instance.name.clone(),
-            partition: Instruction::partition(&instance, path),
+            partition: Instruction::partition(instance, path),
         }
     }
 
@@ -92,9 +92,9 @@ impl<'a> Instruction<'a> {
 
 pub trait InstructionReader {
     fn finish_instructions(&mut self) {}
-    fn read_instruction<'a>(&mut self, instruction: Instruction<'a>);
+    fn read_instruction(&mut self, instruction: Instruction);
 
-    fn read_instructions<'a>(&mut self, instructions: Vec<Instruction<'a>>) {
+    fn read_instructions(&mut self, instructions: Vec<Instruction>) {
         for instruction in instructions {
             self.read_instruction(instruction);
         }

@@ -6,7 +6,6 @@ use std::{
     io::Write,
     path::PathBuf,
 };
-
 const SRC: &str = "src";
 
 fn serialize_project_tree<S: Serializer>(
@@ -60,7 +59,7 @@ impl FileSystem {
 }
 
 impl InstructionReader for FileSystem {
-    fn read_instruction<'a>(&mut self, instruction: Instruction<'a>) {
+    fn read_instruction(&mut self, instruction: Instruction) {
         match instruction {
             Instruction::AddToTree {
                 name,
@@ -76,7 +75,7 @@ impl InstructionReader for FileSystem {
                     partition.path = Some(PathBuf::from(SRC).join(path));
                 }
 
-                for mut child in partition.children.values_mut() {
+                for child in partition.children.values_mut() {
                     if let Some(path) = &child.path {
                         child.path = Some(PathBuf::from(SRC).join(path));
                     }
@@ -106,7 +105,7 @@ impl InstructionReader for FileSystem {
         let mut file = File::create(self.root.join("default.project.json"))
             .expect("can't create default.project.json");
         file.write_all(
-            &serde_json::to_string_pretty(&self.project)
+            serde_json::to_string_pretty(&self.project)
                 .expect("couldn't serialize project")
                 .as_bytes(),
         )

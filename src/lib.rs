@@ -187,7 +187,7 @@ fn repr_instance<'a>(
 
                         if !NON_TREE_SERVICES.contains(other_class) {
                             instructions
-                                .push(Instruction::add_to_tree(&child, new_base.to_path_buf()));
+                                .push(Instruction::add_to_tree(child, new_base.to_path_buf()));
                         }
 
                         if !child.children().is_empty() {
@@ -263,7 +263,7 @@ impl<'a, I: InstructionReader + ?Sized> TreeIterator<'a, I> {
                                     (
                                         child.name.clone(),
                                         Instruction::partition(
-                                            &child,
+                                            child,
                                             folder_path.join(&child.name),
                                         ),
                                     )
@@ -277,7 +277,7 @@ impl<'a, I: InstructionReader + ?Sized> TreeIterator<'a, I> {
 
                 (instructions, folder_path)
             } else {
-                match repr_instance(&self.path, child, has_scripts) {
+                match repr_instance(self.path, child, has_scripts) {
                     Some((instructions_to_create_base, path)) => {
                         (instructions_to_create_base, path)
                     }
@@ -337,7 +337,7 @@ pub fn process_instructions(tree: &WeakDom, instruction_reader: &mut dyn Instruc
         path: &path,
         tree,
     }
-    .visit_instructions(&root_instance, &has_scripts);
+    .visit_instructions(root_instance, &has_scripts);
 
     instruction_reader.finish_instructions();
 }

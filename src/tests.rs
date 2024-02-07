@@ -41,7 +41,7 @@ impl InstructionReader for VirtualFileSystem {
         self.finished = true;
     }
 
-    fn read_instruction<'a>(&mut self, instruction: Instruction<'a>) {
+    fn read_instruction(&mut self, instruction: Instruction) {
         match instruction {
             Instruction::AddToTree { name, partition } => {
                 self.tree.insert(name, partition);
@@ -52,14 +52,14 @@ impl InstructionReader for VirtualFileSystem {
                     .parent()
                     .expect("no parent?")
                     .to_string_lossy()
-                    .replace("\\", "/");
+                    .replace('\\', "/");
                 let filename = filename
                     .file_name()
                     .expect("no filename?")
                     .to_string_lossy()
-                    .replace("\\", "/");
+                    .replace('\\', "/");
 
-                let system = if parent == "" {
+                let system = if parent.is_empty() {
                     self
                 } else {
                     match self
@@ -82,7 +82,7 @@ impl InstructionReader for VirtualFileSystem {
                             let tree = rbx_xml::from_str_default(&contents_string)
                                 .expect("couldn't decode encoded xml");
                             let child_id = tree.root().children()[0];
-                            let child_instance = tree.get_by_ref(child_id).unwrap().clone();
+                            let child_instance = tree.get_by_ref(child_id).unwrap();
                             VirtualFileContents::Instance(child_instance.properties.to_owned())
                         } else {
                             VirtualFileContents::Bytes(contents_string)
@@ -92,7 +92,7 @@ impl InstructionReader for VirtualFileSystem {
             }
 
             Instruction::CreateFolder { folder } => {
-                let name = folder.to_string_lossy().replace("\\", "/");
+                let name = folder.to_string_lossy().replace('\\', "/");
                 self.files.insert(
                     name,
                     VirtualFile {
@@ -106,7 +106,7 @@ impl InstructionReader for VirtualFileSystem {
 
 #[test]
 fn run_tests() {
-    let _ = env_logger::init();
+    env_logger::init();
     for entry in fs::read_dir("./test-files").expect("couldn't read test-files") {
         let entry = entry.unwrap();
         let path = entry.path();
