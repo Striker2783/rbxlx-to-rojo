@@ -13,7 +13,9 @@ enum Problem {
     BinaryDecodeError(rbx_binary::DecodeError),
     InvalidFile,
     IoError(&'static str, io::Error),
+    #[cfg(feature = "gui")]
     NFDCancel,
+    #[cfg(feature = "gui")]
     NFDError(String),
     XMLDecodeError(rbx_xml::DecodeError),
 }
@@ -34,8 +36,9 @@ impl fmt::Display for Problem {
             Problem::IoError(doing_what, error) => {
                 write!(formatter, "While attempting to {}, {}", doing_what, error)
             }
-
+            #[cfg(feature="gui")]
             Problem::NFDCancel => write!(formatter, "Didn't choose a file."),
+            #[cfg(feature="gui")]
 
             Problem::NFDError(error) => write!(
                 formatter,
@@ -96,6 +99,7 @@ fn routine() -> Result<(), Problem> {
     info!("Select a place file.");
     let file_path = PathBuf::from(match std::env::args().nth(1) {
         Some(text) => text,
+        #[cfg(feature = "gui")]
         None => match nfd::open_file_dialog(Some("rbxl,rbxm,rbxlx,rbxmx"), None)
             .map_err(|error| Problem::NFDError(error.to_string()))?
         {
@@ -103,6 +107,8 @@ fn routine() -> Result<(), Problem> {
             nfd::Response::Cancel => Err(Problem::NFDCancel)?,
             _ => unreachable!(),
         },
+        #[cfg(not(feature = "gui"))]
+        None => Err(Problem::InvalidFile)?,
     });
 
     info!("Opening place file");
@@ -128,6 +134,7 @@ fn routine() -> Result<(), Problem> {
     info!("Select the path to put your Rojo project in.");
     let root = PathBuf::from(match std::env::args().nth(2) {
         Some(text) => text,
+        #[cfg(feature = "gui")]
         None => match nfd::open_pick_folder(Some(&file_path.parent().unwrap().to_string_lossy()))
             .map_err(|error| Problem::NFDError(error.to_string()))?
         {
@@ -135,9 +142,11 @@ fn routine() -> Result<(), Problem> {
             nfd::Response::Cancel => Err(Problem::NFDCancel)?,
             _ => unreachable!(),
         },
+        #[cfg(not(feature = "gui"))]
+        None => Err(Problem::InvalidFile)?,
     });
 
-    let mut filesystem = FileSystem::from_root(root.join(file_path.file_stem().unwrap()).into());
+    let mut filesystem = FileSystem::from_root(root.join(file_path.file_stem().unwrap()));
 
     log_file.write().unwrap().replace(
         fs::File::create(root.join("rbxlx-to-rojo.log"))

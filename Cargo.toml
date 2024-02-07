@@ -11,7 +11,6 @@ path = "src/lib.rs"
 [[bin]]
 name = "rbxlx-to-rojo"
 path = "src/cli.rs"
-required-features = ["cli"]
 
 [dependencies]
 env_logger = "0.11"
@@ -32,4 +31,4 @@ rbx_reflection_database = "0.2.10"
 pretty_assertions = "1.4.0"
 
 [features]
-cli = ["nfd"]
+gui = ["nfd"]
