@@ -168,11 +168,13 @@ fn repr_instance<'a>(
 
         other_class => {
             // When all else fails, we can make a meta folder if there's scripts in it
-            match rbx_reflection::get_class_descriptor(other_class) {
+            match rbx_reflection_database::get().classes.get(other_class) {
                 Some(reflected) => {
                     let treat_as_service = RESPECTED_SERVICES.contains(other_class);
                     // Don't represent services not in respected-services
-                    if reflected.is_service() && !treat_as_service {
+                    if reflected.tags.contains(&rbx_reflection::ClassTag::Service)
+                        && !treat_as_service
+                    {
                         return None;
                     }
 
