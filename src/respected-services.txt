@@ -1,8 +1,7 @@
-Chat
 Lighting
-LocalizationService
 ReplicatedFirst
 ReplicatedStorage
+MaterialService
 ServerScriptService
 ServerStorage
 SoundService
@@ -12,4 +11,5 @@ StarterPack
 StarterPlayerScripts
 Teams
 TestService
+TextChatService
 Workspace
