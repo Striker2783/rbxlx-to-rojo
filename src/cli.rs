@@ -135,25 +135,16 @@ fn get_file(path: Option<String>) -> Result<PathBuf, Problem> {
     Ok(match path {
         Some(text) => text.into(),
         None => {
-            if cfg!(feature = "gui-new") {
-                match rfd::FileDialog::new()
-                    .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
-                    .pick_file()
-                {
-                    Some(p) => p,
-                    None => Err(Problem::FileDialogueError("File Error".into()))?,
-                }
-            } else if cfg!(feature = "gui") {
-                match nfd::open_file_dialog(Some("rbxl,rbxm,rbxlx,rbxmx"), None)
-                    .map_err(|error| Problem::FileDialogueError(error.to_string()))?
-                {
-                    nfd::Response::Okay(path) => path.into(),
-                    nfd::Response::Cancel => Err(Problem::FileDialogueCancel)?,
-                    _ => unreachable!(),
-                }
-            } else {
-                Err(Problem::InvalidFile)?
+            #[cfg(feature = "gui")]
+            match rfd::FileDialog::new()
+                .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
+                .pick_file()
+            {
+                Some(p) => p,
+                None => Err(Problem::FileDialogueError("File Error".into()))?,
             }
+            #[cfg(not(feature = "gui"))]
+            Err(Problem::InvalidFile)?
         }
     })
 }
