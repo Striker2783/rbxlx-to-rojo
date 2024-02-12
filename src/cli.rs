@@ -13,10 +13,8 @@ enum Problem {
     BinaryDecodeError(rbx_binary::DecodeError),
     InvalidFile,
     IoError(&'static str, io::Error),
-    #[cfg(feature = "gui")]
-    NFDCancel,
-    #[cfg(feature = "gui")]
-    NFDError(String),
+    FileDialogueCancel,
+    FileDialogueError(String),
     XMLDecodeError(rbx_xml::DecodeError),
 }
 
@@ -36,11 +34,9 @@ impl fmt::Display for Problem {
             Problem::IoError(doing_what, error) => {
                 write!(formatter, "While attempting to {}, {}", doing_what, error)
             }
-            #[cfg(feature="gui")]
-            Problem::NFDCancel => write!(formatter, "Didn't choose a file."),
-            #[cfg(feature="gui")]
+            Problem::FileDialogueCancel => write!(formatter, "Didn't choose a file."),
 
-            Problem::NFDError(error) => write!(
+            Problem::FileDialogueError(error) => write!(
                 formatter,
                 "Something went wrong when choosing a file: {}",
                 error,
@@ -97,19 +93,7 @@ fn routine() -> Result<(), Problem> {
     info!("rbxlx-to-rojo {}", env!("CARGO_PKG_VERSION"));
 
     info!("Select a place file.");
-    let file_path = PathBuf::from(match std::env::args().nth(1) {
-        Some(text) => text,
-        #[cfg(feature = "gui")]
-        None => match nfd::open_file_dialog(Some("rbxl,rbxm,rbxlx,rbxmx"), None)
-            .map_err(|error| Problem::NFDError(error.to_string()))?
-        {
-            nfd::Response::Okay(path) => path,
-            nfd::Response::Cancel => Err(Problem::NFDCancel)?,
-            _ => unreachable!(),
-        },
-        #[cfg(not(feature = "gui"))]
-        None => Err(Problem::InvalidFile)?,
-    });
+    let file_path = get_file(std::env::args().nth(1))?;
 
     info!("Opening place file");
     let file_source = BufReader::new(
@@ -132,19 +116,7 @@ fn routine() -> Result<(), Problem> {
     }?;
 
     info!("Select the path to put your Rojo project in.");
-    let root = PathBuf::from(match std::env::args().nth(2) {
-        Some(text) => text,
-        #[cfg(feature = "gui")]
-        None => match nfd::open_pick_folder(Some(&file_path.parent().unwrap().to_string_lossy()))
-            .map_err(|error| Problem::NFDError(error.to_string()))?
-        {
-            nfd::Response::Okay(path) => path,
-            nfd::Response::Cancel => Err(Problem::NFDCancel)?,
-            _ => unreachable!(),
-        },
-        #[cfg(not(feature = "gui"))]
-        None => Err(Problem::InvalidFile)?,
-    });
+    let root = get_file(std::env::args().nth(2))?;
 
     let mut filesystem = FileSystem::from_root(root.join(file_path.file_stem().unwrap()));
 
@@ -157,6 +129,33 @@ fn routine() -> Result<(), Problem> {
     process_instructions(&tree, &mut filesystem);
     info!("Done! Check rbxlx-to-rojo.log for a full log.");
     Ok(())
+}
+
+fn get_file(path: Option<String>) -> Result<PathBuf, Problem> {
+    Ok(match path {
+        Some(text) => text.into(),
+        None => {
+            if cfg!(feature = "gui-new") {
+                match rfd::FileDialog::new()
+                    .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
+                    .pick_file()
+                {
+                    Some(p) => p,
+                    None => Err(Problem::FileDialogueError("File Error".into()))?,
+                }
+            } else if cfg!(feature = "gui") {
+                match nfd::open_file_dialog(Some("rbxl,rbxm,rbxlx,rbxmx"), None)
+                    .map_err(|error| Problem::FileDialogueError(error.to_string()))?
+                {
+                    nfd::Response::Okay(path) => path.into(),
+                    nfd::Response::Cancel => Err(Problem::FileDialogueCancel)?,
+                    _ => unreachable!(),
+                }
+            } else {
+                Err(Problem::InvalidFile)?
+            }
+        }
+    })
 }
 
 fn main() {
