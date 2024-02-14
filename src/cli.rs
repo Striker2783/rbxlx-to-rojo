@@ -93,7 +93,24 @@ fn routine() -> Result<(), Problem> {
     info!("rbxlx-to-rojo {}", env!("CARGO_PKG_VERSION"));
 
     info!("Select a place file.");
-    let file_path = get_file(std::env::args().nth(1))?;
+    let file_path = {
+        let path = std::env::args().nth(1);
+        Ok(match path {
+            Some(text) => text.into(),
+            None => {
+                #[cfg(feature = "gui")]
+                match rfd::FileDialog::new()
+                    .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
+                    .pick_file()
+                {
+                    Some(p) => p,
+                    None => Err(Problem::FileDialogueError("File Error".into()))?,
+                }
+                #[cfg(not(feature = "gui"))]
+                Err(Problem::InvalidFile)?
+            }
+        })
+    }?;
 
     info!("Opening place file");
     let file_source = BufReader::new(
@@ -116,7 +133,21 @@ fn routine() -> Result<(), Problem> {
     }?;
 
     info!("Select the path to put your Rojo project in.");
-    let root = get_file(std::env::args().nth(2))?;
+    let root = {
+        let path = std::env::args().nth(2);
+        Ok(match path {
+            Some(text) => text.into(),
+            None => {
+                #[cfg(feature = "gui")]
+                match rfd::FileDialog::new().pick_folder() {
+                    Some(p) => p,
+                    None => Err(Problem::FileDialogueError("Folder Error".into()))?,
+                }
+                #[cfg(not(feature = "gui"))]
+                Err(Problem::InvalidFile)?
+            }
+        })
+    }?;
 
     let mut filesystem = FileSystem::from_root(root.join(file_path.file_stem().unwrap()));
 
@@ -129,24 +160,6 @@ fn routine() -> Result<(), Problem> {
     process_instructions(&tree, &mut filesystem);
     info!("Done! Check rbxlx-to-rojo.log for a full log.");
     Ok(())
-}
-
-fn get_file(path: Option<String>) -> Result<PathBuf, Problem> {
-    Ok(match path {
-        Some(text) => text.into(),
-        None => {
-            #[cfg(feature = "gui")]
-            match rfd::FileDialog::new()
-                .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
-                .pick_file()
-            {
-                Some(p) => p,
-                None => Err(Problem::FileDialogueError("File Error".into()))?,
-            }
-            #[cfg(not(feature = "gui"))]
-            Err(Problem::InvalidFile)?
-        }
-    })
 }
 
 fn main() {
