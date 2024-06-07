@@ -15,7 +15,7 @@ jobs:
         run: |
           cargo build --locked --release --all-features
       - name: Upload selene
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: rbxlx-to-rojo-windows
           path: ./target/release/rbxlx-to-rojo.exe
@@ -30,7 +30,7 @@ jobs:
           source $HOME/.cargo/env
           cargo build --locked --release --all-features
       - name: Upload rbxlx-to-rojo
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: rbxlx-to-rojo-macos
           path: ./target/release/rbxlx-to-rojo
@@ -45,7 +45,7 @@ jobs:
           source $HOME/.cargo/env
           cargo build --locked --release --all-features
       - name: Upload rbxlx-to-rojo
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: rbxlx-to-rojo-linux
           path: ./target/release/rbxlx-to-rojo
