@@ -4,7 +4,6 @@ use std::{
     borrow::Cow,
     fmt, fs,
     io::{self, BufReader, Write},
-    path::PathBuf,
     sync::{Arc, RwLock},
 };
 
@@ -93,7 +92,7 @@ fn routine() -> Result<(), Problem> {
     info!("rbxlx-to-rojo {}", env!("CARGO_PKG_VERSION"));
 
     info!("Select a place file.");
-    let file_path = {
+    let file_path: std::path::PathBuf = {
         let path = std::env::args().nth(1);
         Ok(match path {
             Some(text) => text.into(),
@@ -127,13 +126,13 @@ fn routine() -> Result<(), Problem> {
             rbx_xml::from_reader_default(file_source).map_err(Problem::XMLDecodeError)
         }
         Some(Cow::Borrowed("rbxm")) | Some(Cow::Borrowed("rbxl")) => {
-            rbx_binary::from_reader_default(file_source).map_err(Problem::BinaryDecodeError)
+            rbx_binary::from_reader(file_source).map_err(Problem::BinaryDecodeError)
         }
         _ => Err(Problem::InvalidFile),
     }?;
 
     info!("Select the path to put your Rojo project in.");
-    let root = {
+    let root: std::path::PathBuf = {
         let path = std::env::args().nth(2);
         Ok(match path {
             Some(text) => text.into(),
