@@ -1,7 +1,7 @@
 use log::debug;
 use rbx_dom_weak::{
     types::{Ref, Variant},
-    Instance, WeakDom,
+    ustr, Instance, WeakDom,
 };
 use std::{
     borrow::Cow,
@@ -71,7 +71,7 @@ fn repr_instance<'a>(
                 _ => unreachable!(),
             };
 
-            let source = match child.properties.get("Source").expect("no Source") {
+            let source = match child.properties.get(&ustr("Source")).expect("no Source") {
                 Variant::String(value) => value,
                 _ => unreachable!(),
             }
@@ -210,7 +210,7 @@ fn repr_instance<'a>(
             // If there are scripts, we'll need to make a .meta.json folder
             let folder_path: Cow<'a, Path> = Cow::Owned(base.join(&child.name));
             let meta = MetaFile {
-                class_name: Some(child.class.clone()),
+                class_name: Some(child.class.to_string()),
                 // properties: properties.into_iter().collect(),
                 ignore_unknown_instances: true,
             };
@@ -255,7 +255,7 @@ impl<'a, I: InstructionReader + ?Sized> TreeIterator<'a, I> {
                     instructions.push(Instruction::AddToTree {
                         name: child.name.clone(),
                         partition: TreePartition {
-                            class_name: child.class.clone(),
+                            class_name: child.class.to_string(),
                             children: child
                                 .children()
                                 .iter()
