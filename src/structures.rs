@@ -82,7 +82,7 @@ impl<'a> Instruction<'a> {
 
     pub fn partition(instance: &Instance, path: PathBuf) -> TreePartition {
         TreePartition {
-            class_name: instance.class.clone(),
+            class_name: instance.class.to_string(),
             children: BTreeMap::new(),
             ignore_unknown_instances: true,
             path: Some(path),
