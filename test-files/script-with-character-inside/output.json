@@ -1,6 +1,6 @@
 {
   "files": {
-    "ModuleScript.lua": {
+    "ModuleScript.luau": {
       "contents": {
         "Bytes": "return {}\n"
       }

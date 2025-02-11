@@ -18,12 +18,12 @@
       "contents": {
         "Vfs": {
           "files": {
-            "ModuleScript.lua": {
+            "ModuleScript.luau": {
               "contents": {
                 "Bytes": "local module = {}\n\nreturn module\n"
               }
             },
-            "init.client.lua": {
+            "init.client.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
@@ -37,12 +37,12 @@
       "contents": {
         "Vfs": {
           "files": {
-            "ModuleScript.lua": {
+            "ModuleScript.luau": {
               "contents": {
                 "Bytes": "local module = {}\n\nreturn module\n"
               }
             },
-            "init.lua": {
+            "init.luau": {
               "contents": {
                 "Bytes": "local module = {}\n\nreturn module\n"
               }
@@ -56,12 +56,12 @@
       "contents": {
         "Vfs": {
           "files": {
-            "ModuleScript.lua": {
+            "ModuleScript.luau": {
               "contents": {
                 "Bytes": "local module = {}\n\nreturn module\n"
               }
             },
-            "init.server.lua": {
+            "init.server.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
