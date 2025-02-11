@@ -13,19 +13,19 @@ name = "rbxlx-to-rojo"
 path = "src/cli.rs"
 
 [dependencies]
-env_logger = "0.11"
+env_logger = "0.11.6"
 lazy_static = "1.4"
-log = "0.4"
+log = "0.4.25"
 rbx_binary = { git = "https://github.com/rojo-rbx/rbx-dom/", branch = "master" }
 rbx_dom_weak = { git = "https://github.com/rojo-rbx/rbx-dom/", branch = "master" }
 rbx_reflection = "4"
 rbx_xml = { git = "https://github.com/rojo-rbx/rbx-dom/", branch = "master" }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.138"
 
 # CLI
 rbx_reflection_database = "0.2.12"
-rfd = { version = "0.15.0", optional = true }
+rfd = { version = "0.15.2", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
