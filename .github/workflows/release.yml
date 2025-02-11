@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build (All features)
+        run: |
+          cargo build --locked --release --all-features
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rbxlx-to-rojo-windows
+          path: ./target/release/rbxlx-to-rojo.exe
+
+  build_mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - name: Build (All features)
+        run: |
+          source $HOME/.cargo/env
+          cargo build --locked --release --all-features
+      - name: Upload Mac artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rbxlx-to-rojo-macos
+          path: ./target/release/rbxlx-to-rojo
+
+  build_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - name: Install GTK
+        run: sudo apt install libgtk-3-dev -y
+      - name: Build (All features)
+        run: |
+          source $HOME/.cargo/env
+          cargo build --locked --release --all-features
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rbxlx-to-rojo-linux
+          path: ./target/release/rbxlx-to-rojo
+  release:
+    needs: [build_mac, build_linux, build_windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
+      - run: mkdir files
+      - run: zip -r files/rbxlx-to-rojo-linux.zip rbxlx-to-rojo-linux/*
+      - run: zip -r files/rbxlx-to-rojo-macos.zip rbxlx-to-rojo-macos/*
+      - run: zip -r files/rbxlx-to-rojo-windows.zip rbxlx-to-rojo-windows/*
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: files/*
