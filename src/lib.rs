@@ -80,7 +80,7 @@ fn repr_instance<'a>(
             if child.children().is_empty() {
                 Some((
                     vec![Instruction::CreateFile {
-                        filename: Cow::Owned(base.join(format!("{}{}.lua", child.name, extension))),
+                        filename: Cow::Owned(base.join(format!("{}{}.luau", child.name, extension))),
                         contents: Cow::Borrowed(source),
                     }],
                     Cow::Borrowed(base),
@@ -118,7 +118,7 @@ fn repr_instance<'a>(
                             },
                             Instruction::CreateFile {
                                 filename: Cow::Owned(
-                                    folder_path.join(format!("init{}.lua", extension)),
+                                    folder_path.join(format!("init{}.luau", extension)),
                                 ),
                                 contents: Cow::Borrowed(source),
                             },
@@ -130,7 +130,7 @@ fn repr_instance<'a>(
                         vec![
                             Instruction::CreateFile {
                                 filename: Cow::Owned(
-                                    base.join(format!("{}{}.lua", child.name, extension)),
+                                    base.join(format!("{}{}.luau", child.name, extension)),
                                 ),
                                 contents: Cow::Borrowed(source),
                             },
@@ -151,7 +151,7 @@ fn repr_instance<'a>(
                             },
                             Instruction::CreateFile {
                                 filename: Cow::Owned(
-                                    folder_path.join(format!("init{}.lua", extension)),
+                                    folder_path.join(format!("init{}.luau", extension)),
                                 ),
                                 contents: Cow::Borrowed(source),
                             },

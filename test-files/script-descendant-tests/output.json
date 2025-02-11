@@ -9,12 +9,12 @@
                 "Bytes": "{\n  \"ignoreUnknownInstances\": true\n}"
               }
             },
-            "ScriptWithNoScriptsInside.server.lua": {
+            "ScriptWithNoScriptsInside.server.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
             },
-            "ScriptWithNothingInside.server.lua": {
+            "ScriptWithNothingInside.server.luau": {
               "contents": {
                 "Bytes": ""
               }
@@ -33,22 +33,22 @@
       "contents": {
         "Vfs": {
           "files": {
-            "LocalScript.client.lua": {
+            "LocalScript.client.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
             },
-            "ModuleScript.lua": {
+            "ModuleScript.luau": {
               "contents": {
                 "Bytes": "local module = {}\n\nreturn module\n"
               }
             },
-            "Script.server.lua": {
+            "Script.server.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
             },
-            "init.server.lua": {
+            "init.server.luau": {
               "contents": {
                 "Bytes": ""
               }
@@ -67,7 +67,7 @@
                 "Bytes": "{\n  \"ignoreUnknownInstances\": true\n}"
               }
             },
-            "init.server.lua": {
+            "init.server.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
@@ -81,7 +81,7 @@
       "contents": {
         "Vfs": {
           "files": {
-            "LocalScript.client.lua": {
+            "LocalScript.client.luau": {
               "contents": {
                 "Bytes": "print(\"Hello world!\")\n"
               }
