@@ -1104,27 +1104,27 @@ checksum = "20675572f6f24e9e76ef639bc5552774ed45f1c30e2951e1e99c59888861c539"
 
 [[package]]
 name = "rbx_binary"
-version = "0.7.7"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#d9f0841374697a372b0ff1a89d152061bf91afd3"
+version = "1.0.0"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#8c5073b47b9fa486220f15cb34477deda069d219"
 dependencies = [
  "ahash",
  "log",
  "lz4",
  "profiling",
  "rbx_dom_weak",
- "rbx_reflection 4.7.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
- "rbx_reflection_database 0.2.12+roblox-638 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
+ "rbx_reflection 5.0.0",
+ "rbx_reflection_database 1.0.1+roblox-666",
  "thiserror",
  "zstd",
 ]
 
 [[package]]
 name = "rbx_dom_weak"
-version = "2.9.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#d9f0841374697a372b0ff1a89d152061bf91afd3"
+version = "3.0.0"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#8c5073b47b9fa486220f15cb34477deda069d219"
 dependencies = [
  "ahash",
- "rbx_types 1.10.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
+ "rbx_types 2.0.0",
  "serde",
  "ustr",
 ]
@@ -1135,17 +1135,17 @@ version = "4.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8118ac6021d700e8debe324af6b40ecfd2cef270a00247849dbdfeebb0802677"
 dependencies = [
- "rbx_types 1.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rbx_types 1.10.0",
  "serde",
  "thiserror",
 ]
 
 [[package]]
 name = "rbx_reflection"
-version = "4.7.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#d9f0841374697a372b0ff1a89d152061bf91afd3"
+version = "5.0.0"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#8c5073b47b9fa486220f15cb34477deda069d219"
 dependencies = [
- "rbx_types 1.10.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
+ "rbx_types 2.0.0",
  "serde",
  "thiserror",
 ]
@@ -1157,18 +1157,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0e29381d675420e841f8c02db5755cbb2545ed3e13f56c539546dc58702b512a"
 dependencies = [
  "lazy_static",
- "rbx_reflection 4.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rbx_reflection 4.7.0",
  "rmp-serde",
  "serde",
 ]
 
 [[package]]
 name = "rbx_reflection_database"
-version = "0.2.12+roblox-638"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#d9f0841374697a372b0ff1a89d152061bf91afd3"
+version = "1.0.1+roblox-666"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#8c5073b47b9fa486220f15cb34477deda069d219"
 dependencies = [
  "lazy_static",
- "rbx_reflection 4.7.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
+ "rbx_reflection 5.0.0",
  "rmp-serde",
  "serde",
 ]
@@ -1190,8 +1190,8 @@ dependencies = [
 
 [[package]]
 name = "rbx_types"
-version = "1.10.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#d9f0841374697a372b0ff1a89d152061bf91afd3"
+version = "2.0.0"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#8c5073b47b9fa486220f15cb34477deda069d219"
 dependencies = [
  "base64",
  "bitflags 1.3.2",
@@ -1204,15 +1204,15 @@ dependencies = [
 
 [[package]]
 name = "rbx_xml"
-version = "0.13.5"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#d9f0841374697a372b0ff1a89d152061bf91afd3"
+version = "1.0.0"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#8c5073b47b9fa486220f15cb34477deda069d219"
 dependencies = [
  "ahash",
  "base64",
  "log",
  "rbx_dom_weak",
- "rbx_reflection 4.7.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
- "rbx_reflection_database 0.2.12+roblox-638 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
+ "rbx_reflection 5.0.0",
+ "rbx_reflection_database 1.0.1+roblox-666",
  "xml-rs",
 ]
 
@@ -1226,8 +1226,8 @@ dependencies = [
  "pretty_assertions",
  "rbx_binary",
  "rbx_dom_weak",
- "rbx_reflection 4.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rbx_reflection_database 0.2.12+roblox-638 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rbx_reflection 4.7.0",
+ "rbx_reflection_database 0.2.12+roblox-638",
  "rbx_xml",
  "rfd",
  "serde",
