@@ -1250,7 +1250,7 @@ dependencies = [
  "profiling",
  "rbx_dom_weak",
  "rbx_reflection 5.0.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
- "rbx_reflection_database 1.0.3+roblox-670",
+ "rbx_reflection_database 1.0.3+roblox-670 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
  "thiserror",
  "zstd",
 ]
@@ -1289,9 +1289,9 @@ dependencies = [
 
 [[package]]
 name = "rbx_reflection_database"
-version = "1.0.1+roblox-666"
+version = "1.0.3+roblox-670"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ea11f26cfddc57a136781baed2e68eda5a3aa0735152d1562d65b1909c8d65d"
+checksum = "e22c05ef92528c0fb0cc580592a65ca178d3ea9beb07a1d9ca0a2503c4f3721c"
 dependencies = [
  "lazy_static",
  "rbx_reflection 5.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1349,7 +1349,7 @@ dependencies = [
  "log",
  "rbx_dom_weak",
  "rbx_reflection 5.0.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
- "rbx_reflection_database 1.0.3+roblox-670",
+ "rbx_reflection_database 1.0.3+roblox-670 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
  "xml-rs",
 ]
 
@@ -1364,7 +1364,7 @@ dependencies = [
  "rbx_binary",
  "rbx_dom_weak",
  "rbx_reflection 5.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rbx_reflection_database 1.0.1+roblox-666",
+ "rbx_reflection_database 1.0.3+roblox-670 (registry+https://github.com/rust-lang/crates.io-index)",
  "rbx_xml",
  "rfd",
  "serde",
