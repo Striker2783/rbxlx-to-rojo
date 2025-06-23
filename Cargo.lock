@@ -1232,7 +1232,7 @@ checksum = "20675572f6f24e9e76ef639bc5552774ed45f1c30e2951e1e99c59888861c539"
 [[package]]
 name = "rbx_binary"
 version = "1.0.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#5d67bb08be7a94da97a68b86e2b22f8a75b0afcd"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#62bf198bbb5662476b29a6ef8f530df51df1d4b6"
 dependencies = [
  "ahash",
  "log",
@@ -1248,7 +1248,7 @@ dependencies = [
 [[package]]
 name = "rbx_dom_weak"
 version = "3.0.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#5d67bb08be7a94da97a68b86e2b22f8a75b0afcd"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#62bf198bbb5662476b29a6ef8f530df51df1d4b6"
 dependencies = [
  "ahash",
  "rbx_types 2.0.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
@@ -1270,7 +1270,7 @@ dependencies = [
 [[package]]
 name = "rbx_reflection"
 version = "5.0.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#5d67bb08be7a94da97a68b86e2b22f8a75b0afcd"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#62bf198bbb5662476b29a6ef8f530df51df1d4b6"
 dependencies = [
  "rbx_types 2.0.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
  "serde",
@@ -1292,7 +1292,7 @@ dependencies = [
 [[package]]
 name = "rbx_reflection_database"
 version = "1.0.3+roblox-670"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#5d67bb08be7a94da97a68b86e2b22f8a75b0afcd"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#62bf198bbb5662476b29a6ef8f530df51df1d4b6"
 dependencies = [
  "lazy_static",
  "rbx_reflection 5.0.0 (git+https://github.com/rojo-rbx/rbx-dom/?branch=master)",
@@ -1318,7 +1318,7 @@ dependencies = [
 [[package]]
 name = "rbx_types"
 version = "2.0.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#5d67bb08be7a94da97a68b86e2b22f8a75b0afcd"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#62bf198bbb5662476b29a6ef8f530df51df1d4b6"
 dependencies = [
  "base64",
  "bitflags 1.3.2",
@@ -1332,7 +1332,7 @@ dependencies = [
 [[package]]
 name = "rbx_xml"
 version = "1.0.0"
-source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#5d67bb08be7a94da97a68b86e2b22f8a75b0afcd"
+source = "git+https://github.com/rojo-rbx/rbx-dom/?branch=master#62bf198bbb5662476b29a6ef8f530df51df1d4b6"
 dependencies = [
  "ahash",
  "base64",
