@@ -25,7 +25,7 @@ serde_json = "1.0.138"
 
 # CLI
 rbx_reflection_database = "1.0.3+roblox-666"
-rfd = { version = "0.15.2", optional = true }
+rfd = { version = "0.15.4", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
