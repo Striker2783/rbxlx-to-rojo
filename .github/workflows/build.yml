@@ -11,7 +11,16 @@ jobs:
     name: rbxlx-to-rojo
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            name: rbxlx-to-rojo-linux
+            path: rbxlx-to-rojo
+          - os: maxos-latest
+            name: rbxlx-to-rojo-macos
+            path: rbxlx-to-rojo
+          - os: windows-latest
+            name: rbxlx-to-rojo-
+            path: rbxlx-to-rojo.exe
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4.2.2
@@ -25,3 +34,8 @@ jobs:
           sudo apt install libgtk-3-dev -y
       - name: Build (All Features)
         run: cargo build --locked --release --all-features
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: ${{matrix.name}}
+          path: ./target/release/${{matrix.path}}
