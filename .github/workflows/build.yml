@@ -15,11 +15,11 @@ jobs:
           - os: ubuntu-latest
             name: rbxlx-to-rojo-linux
             path: rbxlx-to-rojo
-          - os: maxos-latest
+          - os: macos-latest
             name: rbxlx-to-rojo-macos
             path: rbxlx-to-rojo
           - os: windows-latest
-            name: rbxlx-to-rojo-
+            name: rbxlx-to-rojo-windows
             path: rbxlx-to-rojo.exe
     runs-on: ${{ matrix.os }}
     steps:
