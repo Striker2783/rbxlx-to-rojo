@@ -8,7 +8,6 @@ on:
       - master
 jobs:
   build:
-    name: rbxlx-to-rojo
     strategy:
       matrix:
         include:
@@ -21,6 +20,7 @@ jobs:
           - os: windows-latest
             name: rbxlx-to-rojo-windows
             path: rbxlx-to-rojo.exe
+    name: ${{matrix.name}}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4.2.2
