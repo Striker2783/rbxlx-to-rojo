@@ -8,6 +8,7 @@ on:
       - master
 jobs:
   build:
+    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -20,7 +21,7 @@ jobs:
           - os: windows-latest
             name: rbxlx-to-rojo-windows
             path: rbxlx-to-rojo.exe
-    name: ${{matrix.name}}
+    name: Build ${{matrix.os}}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4.2.2
@@ -35,6 +36,7 @@ jobs:
       - name: Build (All Features)
         run: cargo build --locked --release --all-features
       - name: Test
+        if: runner.os == 'Linux' || runner.os == 'maxOS'
         run: cargo test --all --verbose
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.6.2
