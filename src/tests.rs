@@ -137,7 +137,18 @@ fn run_tests() {
         expected_path.push("output.json");
         assert!(vfs.finished, "finish_instructions was not called");
 
-        if let Ok(expected) = fs::read_to_string(&expected_path) {
+        if let Ok(mut expected) = fs::read_to_string(&expected_path) {
+            #[cfg(target_os = "windows")]
+            {
+                let mut expected2 = String::new();
+                for c in expected.chars() {
+                    if c == '\n' {
+                        expected2.push('\r');
+                    }
+                    expected2.push(c);
+                }
+                expected = expected2
+            }
             assert_eq!(
                 serde_json::from_str::<VirtualFileSystem>(&expected).unwrap(),
                 vfs,
