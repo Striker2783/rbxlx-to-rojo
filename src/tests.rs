@@ -154,7 +154,7 @@ fn run_tests() {
 
         if let Ok(expected) = fs::read_to_string(&expected_path) {
             #[cfg(target_os = "windows")]
-            let expected = change_expected(expected);
+            let expected = change_expected(&expected);
             assert_eq!(
                 serde_json::from_str::<VirtualFileSystem>(&expected).unwrap(),
                 vfs,
