@@ -74,6 +74,8 @@ impl InstructionReader for VirtualFileSystem {
                 };
 
                 let contents_string = String::from_utf8_lossy(&contents).into_owned();
+                #[cfg(target_os = "windows")]
+                let contents_string = change_content_strings(&contents_string);
                 let rbxmx = filename.ends_with(".rbxmx");
                 system.files.insert(
                     filename,
@@ -105,13 +107,12 @@ impl InstructionReader for VirtualFileSystem {
 }
 
 #[cfg(target_os = "windows")]
-fn change_expected(expected: &str) -> String {
+fn change_content_strings(expected: &str) -> String {
     let mut expected2 = String::new();
     let mut prev = '\0';
     for c in expected.chars() {
-        if prev == '\\' && c == 'n' {
-            expected2.push('r');
-            expected2.push('\\');
+        if prev == '\r' && c == '\n' {
+            expected2.pop();
         }
         expected2.push(c);
         prev = c;
@@ -153,8 +154,6 @@ fn run_tests() {
         assert!(vfs.finished, "finish_instructions was not called");
 
         if let Ok(expected) = fs::read_to_string(&expected_path) {
-            #[cfg(target_os = "windows")]
-            let expected = change_expected(&expected);
             assert_eq!(
                 serde_json::from_str::<VirtualFileSystem>(&expected).unwrap(),
                 vfs,
