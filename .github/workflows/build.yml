@@ -36,7 +36,6 @@ jobs:
       - name: Build (All Features)
         run: cargo build --locked --release --all-features
       - name: Test
-        if: runner.os == 'Linux' || runner.os == 'macOS'
         run: cargo test --all --verbose
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.6.2
