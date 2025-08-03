@@ -222,7 +222,7 @@ fn repr_instance<'a>(
                     Instruction::CreateFile {
                         filename: Cow::Owned(folder_path.join("init.meta.json")),
                         contents: Cow::Owned(
-                            serde_json::to_string(&meta)
+                            serde_json::to_string_pretty(&meta)
                                 .expect("couldn't serialize meta")
                                 .as_bytes()
                                 .into(),
