@@ -140,12 +140,16 @@ fn run_tests() {
         if let Ok(mut expected) = fs::read_to_string(&expected_path) {
             #[cfg(target_os = "windows")]
             {
+                println!("{expected}");
                 let mut expected2 = String::new();
+                let mut prev = '\0';
                 for c in expected.chars() {
-                    if c == '\n' {
-                        expected2.push('\r');
+                    if prev == '\\' && c == 'n' {
+                        expected2.push('r');
+                        expected2.push('\\');
                     }
                     expected2.push(c);
+                    prev = c;
                 }
                 expected = expected2
             }
