@@ -104,6 +104,21 @@ impl InstructionReader for VirtualFileSystem {
     }
 }
 
+#[cfg(target_os = "windows")]
+fn change_expected(expected: &str) -> String {
+    let mut expected2 = String::new();
+    let mut prev = '\0';
+    for c in expected.chars() {
+        if prev == '\\' && c == 'n' {
+            expected2.push('r');
+            expected2.push('\\');
+        }
+        expected2.push(c);
+        prev = c;
+    }
+    return expected2;
+}
+
 #[test]
 fn run_tests() {
     env_logger::init();
@@ -137,21 +152,9 @@ fn run_tests() {
         expected_path.push("output.json");
         assert!(vfs.finished, "finish_instructions was not called");
 
-        if let Ok(mut expected) = fs::read_to_string(&expected_path) {
+        if let Ok(expected) = fs::read_to_string(&expected_path) {
             #[cfg(target_os = "windows")]
-            {
-                let mut expected2 = String::new();
-                let mut prev = '\0';
-                for c in expected.chars() {
-                    if prev == '\\' && c == 'n' {
-                        expected2.push('r');
-                        expected2.push('\\');
-                    }
-                    expected2.push(c);
-                    prev = c;
-                }
-                expected = expected2
-            }
+            let expected = change_expected(expected);
             assert_eq!(
                 serde_json::from_str::<VirtualFileSystem>(&expected).unwrap(),
                 vfs,
