@@ -214,7 +214,6 @@ fn repr_instance<'a>(
                 // properties: properties.into_iter().collect(),
                 ignore_unknown_instances: true,
             };
-
             Some((
                 vec![
                     Instruction::CreateFolder {
