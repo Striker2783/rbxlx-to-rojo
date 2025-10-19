@@ -3,3 +3,4 @@ target
 test-files/**/*.luau
 test-files/**/default.project.json
 test-files/**/*.meta.json
+.vscode
