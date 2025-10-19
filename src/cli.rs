@@ -66,7 +66,7 @@ impl log::Log for WrappedLogger {
 
             if let Some(ref mut log_file) = &mut *self.log_file.write().unwrap() {
                 log_file
-                    .write(format!("{}\r\n", record.args()).as_bytes())
+                    .write_all(format!("{}\r\n", record.args()).as_bytes())
                     .ok();
             }
         }
