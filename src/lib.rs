@@ -168,7 +168,8 @@ fn repr_instance<'a>(
 
         other_class => {
             // When all else fails, we can make a meta folder if there's scripts in it
-            match rbx_reflection_database::get().classes.get(other_class) {
+            let database = rbx_reflection_database::get().expect("Could Not Find Reflect Database");
+            match database.classes.get(other_class) {
                 Some(reflected) => {
                     let treat_as_service = RESPECTED_SERVICES.contains(other_class);
                     // Don't represent services not in respected-services

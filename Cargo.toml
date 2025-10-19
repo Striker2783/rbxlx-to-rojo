@@ -18,13 +18,13 @@ lazy_static = "1.4"
 log = "0.4.28"
 rbx_binary = "2.0.0"
 rbx_dom_weak = "4.0.0"
-rbx_reflection = "5.0.0"
+rbx_reflection = "6.0.0"
 rbx_xml = "2.0.0"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
 
 # CLI
-rbx_reflection_database = "1.0.3+roblox-666"
+rbx_reflection_database = "2.0.0"
 rfd = { version = "0.15.4", optional = true }
 
 [dev-dependencies]
