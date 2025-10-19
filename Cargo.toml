@@ -16,10 +16,10 @@ path = "src/cli.rs"
 env_logger = "0.11.6"
 lazy_static = "1.4"
 log = "0.4.28"
-rbx_binary = { git = "https://github.com/rojo-rbx/rbx-dom/", branch = "master" }
-rbx_dom_weak = { git = "https://github.com/rojo-rbx/rbx-dom/", branch = "master" }
+rbx_binary = "2.0.0"
+rbx_dom_weak = "4.0.0"
 rbx_reflection = "5.0.0"
-rbx_xml = { git = "https://github.com/rojo-rbx/rbx-dom/", branch = "master" }
+rbx_xml = "2.0.0"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
 
