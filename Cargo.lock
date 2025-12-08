@@ -888,7 +888,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "07033963ba89ebaf1584d767badaa2e8fcec21aedea6b8c0346d487d49c28667"
 dependencies = [
  "cfg-if",
- "windows-targets 0.52.6",
+ "windows-targets 0.53.5",
 ]
 
 [[package]]
@@ -1305,9 +1305,9 @@ checksum = "20675572f6f24e9e76ef639bc5552774ed45f1c30e2951e1e99c59888861c539"
 
 [[package]]
 name = "rbx_binary"
-version = "2.0.0"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d419f67c8012bf83569086e1208c541478b3b8e4f523deaa0b80d723fb5ef22"
+checksum = "95e2b4a187679aa3d169ed50ed5eedbf26383459fec83bf1232c2934b35b24de"
 dependencies = [
  "ahash",
  "log",
@@ -1334,9 +1334,9 @@ dependencies = [
 
 [[package]]
 name = "rbx_reflection"
-version = "6.0.0"
+version = "6.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "565dd3430991f35443fa6d23cc239fade2110c5089deb6bae5de77c400df4fd2"
+checksum = "84f635e79d5d710c82e9049faa57d32945e76a6b041280dc6274f732c0dd78dc"
 dependencies = [
  "rbx_types",
  "serde",
@@ -1345,9 +1345,9 @@ dependencies = [
 
 [[package]]
 name = "rbx_reflection_database"
-version = "2.0.1+roblox-697"
+version = "2.0.2+roblox-700"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d69035a14b103c5a9b8bc6a61d30f4ee6f2608afdee137dae09b26037dba5dc8"
+checksum = "de2753b896d08d74316d8b89fbeb2470ebd3986404ebba82fa85fcc0330955cf"
 dependencies = [
  "dirs",
  "log",
