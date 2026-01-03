@@ -32,7 +32,7 @@ jobs:
       - name: Install GTK
         if: runner.os == 'Linux'
         run: |
-          sudo apt install libgtk-3-dev -y
+          sudo apt update -y && sudo apt install libgtk-3-dev -y
       - name: Build (All Features)
         run: cargo build --locked --release --all-features
       - name: Test
