@@ -24,11 +24,14 @@ rbx_xml = "2.0.1"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 
-# CLI
+# File Picker
 rfd = { version = "0.17.2", optional = true }
+# GUI
+egui = { version = "0.33.3", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
 
 [features]
 file_picker = ["rfd"]
+gui = ["file_picker", "egui"]
