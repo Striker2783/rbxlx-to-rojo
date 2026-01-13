@@ -10,7 +10,7 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "rbxlx-to-rojo"
-path = "src/cli.rs"
+path = "src/main.rs"
 
 [dependencies]
 env_logger = "0.11.6"

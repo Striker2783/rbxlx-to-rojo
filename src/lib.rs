@@ -14,6 +14,8 @@ use structures::*;
 pub mod filesystem;
 pub mod structures;
 
+#[cfg(feature = "gui")]
+pub mod gui;
 #[cfg(test)]
 mod tests;
 
@@ -80,7 +82,9 @@ fn repr_instance<'a>(
             if child.children().is_empty() {
                 Some((
                     vec![Instruction::CreateFile {
-                        filename: Cow::Owned(base.join(format!("{}{}.luau", child.name, extension))),
+                        filename: Cow::Owned(
+                            base.join(format!("{}{}.luau", child.name, extension)),
+                        ),
                         contents: Cow::Borrowed(source),
                     }],
                     Cow::Borrowed(base),
