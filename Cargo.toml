@@ -31,4 +31,4 @@ rfd = { version = "0.17.2", optional = true }
 pretty_assertions = "1.4.0"
 
 [features]
-gui = ["rfd"]
+file_picker = ["rfd"]

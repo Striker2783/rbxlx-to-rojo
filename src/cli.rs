@@ -97,7 +97,7 @@ fn routine() -> Result<(), Problem> {
         Ok(match path {
             Some(text) => text.into(),
             None => {
-                #[cfg(feature = "gui")]
+                #[cfg(feature = "file_picker")]
                 match rfd::FileDialog::new()
                     .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
                     .pick_file()
@@ -105,7 +105,7 @@ fn routine() -> Result<(), Problem> {
                     Some(p) => p,
                     None => Err(Problem::FileDialogueError("File Error".into()))?,
                 }
-                #[cfg(not(feature = "gui"))]
+                #[cfg(not(feature = "file_picker"))]
                 Err(Problem::InvalidFile)?
             }
         })
@@ -137,12 +137,12 @@ fn routine() -> Result<(), Problem> {
         Ok(match path {
             Some(text) => text.into(),
             None => {
-                #[cfg(feature = "gui")]
+                #[cfg(feature = "file_picker")]
                 match rfd::FileDialog::new().pick_folder() {
                     Some(p) => p,
                     None => Err(Problem::FileDialogueError("Folder Error".into()))?,
                 }
-                #[cfg(not(feature = "gui"))]
+                #[cfg(not(feature = "file_picker"))]
                 Err(Problem::InvalidFile)?
             }
         })
