@@ -25,7 +25,7 @@ serde_json = "1.0.149"
 
 # CLI
 rbx_reflection_database = "2.0.1"
-rfd = { version = "0.16.0", optional = true }
+rfd = { version = "0.17.2", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
