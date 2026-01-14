@@ -1,3 +1,5 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 use log::info;
 use rbxlx_to_rojo::{filesystem::FileSystem, process_instructions};
 use std::{
@@ -28,7 +30,10 @@ impl fmt::Display for Problem {
             ),
 
             Problem::InvalidFile => {
-                write!(formatter, "The file provided does not have a recognized file extension")
+                write!(
+                    formatter,
+                    "The file provided does not have a recognized file extension"
+                )
             }
 
             Problem::IoError(doing_what, error) => {
