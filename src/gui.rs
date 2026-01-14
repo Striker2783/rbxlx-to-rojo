@@ -1,16 +1,20 @@
 use std::{borrow::Cow, fmt::Display, fs, io::BufReader, path::Path};
 
 use eframe::{
-    egui::{CentralPanel, Color32},
     App, NativeOptions,
+    egui::{CentralPanel, Color32, ViewportBuilder},
 };
 
 use crate::{filesystem::FileSystem, process_instructions};
 
 pub fn run() -> Result<(), GUIError> {
+    let options = eframe::NativeOptions {
+        viewport: ViewportBuilder::default().with_inner_size([380.0, 240.0]),
+        ..Default::default()
+    };
     eframe::run_native(
         "rbxlx to Rojo",
-        NativeOptions::default(),
+        options,
         Box::new(|_| Ok(Box::<MainApp>::default())),
     )
     .map_err(GUIError::Gui)?;
