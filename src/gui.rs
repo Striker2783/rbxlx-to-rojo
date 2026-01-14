@@ -1,7 +1,7 @@
 use std::{borrow::Cow, fmt::Display, fs, io::BufReader, path::Path};
 
 use eframe::{
-    App, NativeOptions,
+    App,
     egui::{CentralPanel, Color32, ViewportBuilder},
 };
 
@@ -68,7 +68,7 @@ impl App for MainApp {
         CentralPanel::default().show(ctx, |ui| {
             ui.heading("rbxlx to Rojo");
             ui.add_space(5.0);
-            ui.label("Input rbxlx File");
+            ui.label("rbxlx File");
             ui.horizontal(|ui| {
                 ui.text_edit_singleline(&mut self.input);
                 let button = ui.button("Pick File");
@@ -82,7 +82,7 @@ impl App for MainApp {
             });
             ui.add_space(10.0);
 
-            ui.label("Input Directory Output");
+            ui.label("Directory Output");
             ui.horizontal(|ui| {
                 ui.text_edit_singleline(&mut self.output);
                 let button = ui.button("Pick File");
