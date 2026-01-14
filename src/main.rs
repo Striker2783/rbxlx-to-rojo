@@ -65,7 +65,7 @@ impl log::Log for WrappedLogger {
         if self.enabled(record.metadata()) {
             self.log.log(record);
 
-            if let Some(ref mut log_file) = &mut *self.log_file.write().unwrap() {
+            if let Some(log_file) = &mut *self.log_file.write().unwrap() {
                 log_file
                     .write_all(format!("{}\r\n", record.args()).as_bytes())
                     .ok();

@@ -2,7 +2,7 @@
 name = "rbxlx-to-rojo"
 version = "1.0.1"
 authors = ["Kampfkarren"]
-edition = "2018"
+edition = "2024"
 
 [lib]
 name = "rbxlx_to_rojo"
