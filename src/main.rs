@@ -2,6 +2,7 @@ use log::info;
 use rbxlx_to_rojo::{filesystem::FileSystem, process_instructions};
 use std::{
     borrow::Cow,
+    env::{self},
     fmt, fs,
     io::{self, BufReader, Write},
     sync::{Arc, RwLock},
@@ -97,7 +98,7 @@ fn routine() -> Result<(), Problem> {
         Ok(match path {
             Some(text) => text.into(),
             None => {
-                #[cfg(feature = "gui")]
+                #[cfg(feature = "file_picker")]
                 match rfd::FileDialog::new()
                     .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
                     .pick_file()
@@ -105,7 +106,7 @@ fn routine() -> Result<(), Problem> {
                     Some(p) => p,
                     None => Err(Problem::FileDialogueError("File Error".into()))?,
                 }
-                #[cfg(not(feature = "gui"))]
+                #[cfg(not(feature = "file_picker"))]
                 Err(Problem::InvalidFile)?
             }
         })
@@ -137,12 +138,12 @@ fn routine() -> Result<(), Problem> {
         Ok(match path {
             Some(text) => text.into(),
             None => {
-                #[cfg(feature = "gui")]
+                #[cfg(feature = "file_picker")]
                 match rfd::FileDialog::new().pick_folder() {
                     Some(p) => p,
                     None => Err(Problem::FileDialogueError("Folder Error".into()))?,
                 }
-                #[cfg(not(feature = "gui"))]
+                #[cfg(not(feature = "file_picker"))]
                 Err(Problem::InvalidFile)?
             }
         })
@@ -162,6 +163,17 @@ fn routine() -> Result<(), Problem> {
 }
 
 fn main() {
+    #[cfg(feature = "gui")]
+    {
+        let args = env::args().nth(1);
+        if args.is_none() {
+            if let Err(error) = rbxlx_to_rojo::gui::run() {
+                eprintln!("An error occurred while using rbxlx-to-rojo.");
+                eprintln!("{}", error);
+            }
+            return;
+        }
+    }
     if let Err(error) = routine() {
         eprintln!("An error occurred while using rbxlx-to-rojo.");
         eprintln!("{}", error);

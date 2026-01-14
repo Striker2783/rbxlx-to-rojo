@@ -10,7 +10,7 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "rbxlx-to-rojo"
-path = "src/cli.rs"
+path = "src/main.rs"
 
 [dependencies]
 env_logger = "0.11.6"
@@ -24,11 +24,14 @@ rbx_xml = "2.0.1"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 
-# CLI
+# File Picker
 rfd = { version = "0.17.2", optional = true }
+# GUI
+eframe = { version = "0.33.3", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
 
 [features]
-gui = ["rfd"]
+file_picker = ["rfd"]
+gui = ["file_picker", "eframe"]
