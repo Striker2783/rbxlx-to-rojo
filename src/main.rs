@@ -2,7 +2,7 @@ use log::info;
 use rbxlx_to_rojo::{filesystem::FileSystem, process_instructions};
 use std::{
     borrow::Cow,
-    env::{self, Args},
+    env::{self},
     fmt, fs,
     io::{self, BufReader, Write},
     sync::{Arc, RwLock},
@@ -163,13 +163,18 @@ fn routine() -> Result<(), Problem> {
 }
 
 fn main() {
-    let args = env::args().nth(1);
-    if args.is_none() && cfg!(feature = "gui") {
-        if let Err(error) = rbxlx_to_rojo::gui::run() {
-            eprintln!("An error occurred while using rbxlx-to-rojo.");
-            eprintln!("{}", error);
+    #[cfg(feature = "gui")]
+    {
+        let args = env::args().nth(1);
+        if args.is_none() {
+            if let Err(error) = rbxlx_to_rojo::gui::run() {
+                eprintln!("An error occurred while using rbxlx-to-rojo.");
+                eprintln!("{}", error);
+            }
+            return;
         }
-    } else if let Err(error) = routine() {
+    }
+    if let Err(error) = routine() {
         eprintln!("An error occurred while using rbxlx-to-rojo.");
         eprintln!("{}", error);
     }
