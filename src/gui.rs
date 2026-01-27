@@ -1,4 +1,12 @@
-use std::{borrow::Cow, fmt::Display, fs, io::BufReader, path::Path};
+use std::{
+    borrow::Cow,
+    fmt::Display,
+    fs,
+    io::BufReader,
+    path::{Path, PathBuf},
+    sync::mpsc,
+    thread, time,
+};
 
 use eframe::{
     App,
@@ -22,21 +30,58 @@ pub fn run() -> Result<(), GUIError> {
 }
 
 #[derive(Debug, Default)]
-struct MainApp {
+struct PickInput {
+    rx: Option<mpsc::Receiver<PathBuf>>,
     input: String,
+}
+
+impl PickInput {
+    fn show(&mut self, _ctx: &eframe::egui::Context, ui: &mut eframe::egui::Ui) {
+        ui.horizontal(|ui| {
+            ui.text_edit_singleline(&mut self.input);
+            let button = ui.button("Pick File");
+            if button.clicked() {
+                let (tx, rx) = mpsc::channel();
+                if self.rx.is_none() {
+                    self.rx = Some(rx);
+                    let prev = self.input.clone();
+                    thread::spawn(move || {
+                        if let Some(p) = rfd::FileDialog::new()
+                            .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"])
+                            .set_file_name(prev)
+                            .pick_file()
+                        {
+                            let _ = tx.send(p);
+                        }
+                    });
+                }
+            }
+            if let Some(rx) = &mut self.rx
+                && let Ok(p) = rx.try_recv()
+            {
+                self.rx = None;
+                self.input = p.to_string_lossy().to_string();
+            }
+        });
+    }
+}
+
+#[derive(Debug, Default)]
+struct MainApp {
     output: String,
     error_msg: Option<String>,
     success: bool,
+    input: PickInput,
 }
 
 impl MainApp {
     fn process(&mut self) -> Result<(), String> {
-        if self.input.is_empty() {
+        if self.input.input.is_empty() {
             return Err("No Input File Provided".to_string());
         } else if self.output.is_empty() {
             return Err("No Output File Provided".to_string());
         };
-        let input_path = Path::new(&self.input).to_path_buf();
+        let input_path = Path::new(&self.input.input).to_path_buf();
         let output_path = Path::new(&self.output).to_path_buf();
 
         let file_source = BufReader::new(
@@ -69,17 +114,7 @@ impl App for MainApp {
             ui.heading("rbxlx to Rojo");
             ui.add_space(5.0);
             ui.label("rbxlx File");
-            ui.horizontal(|ui| {
-                ui.text_edit_singleline(&mut self.input);
-                let button = ui.button("Pick File");
-                if button.clicked() {
-                    if let Some(p) = rfd::FileDialog::new()
-                        .add_filter("rbx", &["rbxl", "rbxlx", "rbxm", "rbxmx"]).set_file_name(&self.input)
-                        .pick_file() {
-                            self.input = p.to_string_lossy().to_string();
-                        }
-                }
-            });
+            self.input.show(ctx, ui);
             ui.add_space(10.0);
 
             ui.label("Directory Output");
