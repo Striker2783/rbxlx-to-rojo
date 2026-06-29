@@ -66,7 +66,7 @@ impl InstructionReader for FileSystem {
                 mut partition,
             } => {
                 assert!(
-                    self.project.tree.get(&name).is_none(),
+                    !self.project.tree.contains_key(&name),
                     "Duplicate item added to tree! Instances can't have the same name: {}",
                     name
                 );

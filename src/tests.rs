@@ -4,7 +4,7 @@ use pretty_assertions::assert_eq;
 use rbx_dom_weak::{types::Variant, UstrMap};
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{BTreeMap, HashMap},
+    collections::BTreeMap,
     fs,
     io::ErrorKind,
     time::Instant,

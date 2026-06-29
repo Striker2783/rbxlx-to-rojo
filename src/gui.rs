@@ -13,7 +13,7 @@ use eframe::{
     egui::{CentralPanel, Color32, Context, Ui, ViewportBuilder},
 };
 
-use crate::{filesystem::FileSystem, process_instructions};
+use crate::{filesystem::FileSystem, process_instructions, utils::setup_logger};
 
 pub fn run() -> Result<(), GUIError> {
     let options = eframe::NativeOptions {
@@ -130,7 +130,14 @@ impl MainApp {
         }?;
         let mut filesystem =
             FileSystem::from_root(output_path.join(input_path.file_stem().unwrap()));
+        let log_file = setup_logger();
+
+        log_file.write().unwrap().replace(
+            fs::File::create(output_path.join("rbxlx-to-rojo.log"))
+                .map_err(|error| format!("couldn't create log file {error:?}"))?,
+        );
         process_instructions(&tree, &mut filesystem);
+
         Ok(())
     }
 }
