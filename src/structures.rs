@@ -55,7 +55,7 @@ pub(crate) struct MetaFile {
     pub ignore_unknown_instances: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub enum Instruction<'a> {
     AddToTree {
         name: String,
@@ -70,6 +70,24 @@ pub enum Instruction<'a> {
     CreateFolder {
         folder: Cow<'a, Path>,
     },
+}
+
+impl<'a> std::fmt::Debug for Instruction<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::AddToTree { name, partition: _ } => {
+                f.debug_struct("AddToTree").field("name", name).finish()
+            }
+            Self::CreateFile { filename, contents: _ } => f
+                .debug_struct("CreateFile")
+                .field("filename", filename)
+                .finish(),
+            Self::CreateFolder { folder } => f
+                .debug_struct("CreateFolder")
+                .field("folder", folder)
+                .finish(),
+        }
+    }
 }
 
 impl<'a> Instruction<'a> {

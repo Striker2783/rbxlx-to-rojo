@@ -1,7 +1,8 @@
-use log::debug;
+use log::{debug, info};
 use rbx_dom_weak::{
+    Instance, WeakDom,
     types::{Ref, Variant},
-    ustr, Instance, WeakDom,
+    ustr,
 };
 use std::{
     borrow::Cow,
@@ -18,6 +19,7 @@ pub mod structures;
 pub mod gui;
 #[cfg(test)]
 mod tests;
+pub mod utils;
 
 lazy_static::lazy_static! {
     static ref NON_TREE_SERVICES: HashSet<&'static str> = include_str!("./non-tree-services.txt").lines().collect();
@@ -41,6 +43,7 @@ fn repr_instance<'a>(
 
     match child.class.as_str() {
         "Folder" => {
+            info!("Instruction: Adding Folder {:?}", base);
             let folder_path = base.join(&child.name);
             let owned: Cow<'a, Path> = Cow::Owned(folder_path);
             let clone = owned.clone();
@@ -66,6 +69,7 @@ fn repr_instance<'a>(
         }
 
         "Script" | "LocalScript" | "ModuleScript" => {
+            info!("Instruction: Adding {} {:?}", child.class.as_str(), base);
             let extension = match child.class.as_str() {
                 "Script" => ".server",
                 "LocalScript" => ".client",
@@ -171,6 +175,7 @@ fn repr_instance<'a>(
         }
 
         other_class => {
+            info!("Instruction: Adding metadata {:?}", base);
             // When all else fails, we can make a meta folder if there's scripts in it
             let database = rbx_reflection_database::get().expect("Could Not Find Reflect Database");
             match database.classes.get(other_class) {
@@ -246,6 +251,7 @@ impl<'a, I: InstructionReader + ?Sized> TreeIterator<'a, I> {
             let child = self.tree.get_by_ref(*child_id).expect("got fake child id?");
 
             let (instructions_to_create_base, path) = if child.class == "StarterPlayer" {
+                info!("Adding instructions for StarterPlayer");
                 // We can't respect StarterPlayer as a service, because then Rojo
                 // tries to delete StarterPlayerScripts and whatnot, which is not valid.
                 let folder_path: Cow<'a, Path> = Cow::Owned(self.path.join(&child.name));
@@ -290,7 +296,9 @@ impl<'a, I: InstructionReader + ?Sized> TreeIterator<'a, I> {
                     None => continue,
                 }
             };
-
+            for instruction in &instructions_to_create_base {
+                info!("Executing {:?}", instruction.clone());
+            }
             self.instruction_reader
                 .read_instructions(instructions_to_create_base);
 
@@ -308,6 +316,7 @@ fn check_has_scripts(
     tree: &WeakDom,
     instance: &Instance,
     has_scripts: &mut HashMap<Ref, bool>,
+    name: String,
 ) -> bool {
     let mut children_have_scripts = false;
 
@@ -316,13 +325,17 @@ fn check_has_scripts(
             tree,
             tree.get_by_ref(*child_id).expect("fake child id?"),
             has_scripts,
+            format!("{}/{}", name, instance.name),
         );
 
         children_have_scripts = children_have_scripts || result;
     }
 
     let result = match instance.class.as_str() {
-        "Script" | "LocalScript" | "ModuleScript" => true,
+        "Script" | "LocalScript" | "ModuleScript" => {
+            info!("{} at {}/{}", instance.class.as_str(), name, instance.name);
+            true
+        }
         _ => children_have_scripts,
     };
 
@@ -331,13 +344,15 @@ fn check_has_scripts(
 }
 
 pub fn process_instructions(tree: &WeakDom, instruction_reader: &mut dyn InstructionReader) {
+    info!("Starting processing, please wait a bit...");
     let root = tree.root_ref();
     let root_instance = tree.get_by_ref(root).expect("fake root id?");
     let path = PathBuf::new();
 
     let mut has_scripts = HashMap::new();
-    check_has_scripts(tree, root_instance, &mut has_scripts);
-
+    info!("Checking for Script");
+    check_has_scripts(tree, root_instance, &mut has_scripts, String::new());
+    info!("Adding Files");
     TreeIterator {
         instruction_reader,
         path: &path,
@@ -346,4 +361,5 @@ pub fn process_instructions(tree: &WeakDom, instruction_reader: &mut dyn Instruc
     .visit_instructions(root_instance, &has_scripts);
 
     instruction_reader.finish_instructions();
+    info!("Done! Check rbxlx-to-rojo.log for a full log.");
 }
