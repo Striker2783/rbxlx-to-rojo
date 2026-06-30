@@ -10,7 +10,7 @@ use std::{
 
 use eframe::{
     App,
-    egui::{CentralPanel, Color32, Context, Ui, ViewportBuilder},
+    egui::{CentralPanel, Color32, Ui, ViewportBuilder},
 };
 
 use crate::{filesystem::FileSystem, process_instructions, utils::setup_logger};
@@ -36,7 +36,7 @@ struct PickInput {
 }
 
 impl PickInput {
-    fn show(&mut self, _ctx: &eframe::egui::Context, ui: &mut eframe::egui::Ui) {
+    fn ui(&mut self, ui: &mut eframe::egui::Ui) {
         ui.horizontal(|ui| {
             ui.text_edit_singleline(&mut self.input);
             let button = ui.button("Pick File");
@@ -70,7 +70,7 @@ struct PickOutput {
     rx: Option<mpsc::Receiver<PathBuf>>,
 }
 impl PickOutput {
-    fn show(&mut self, _ctx: &Context, ui: &mut Ui) {
+    fn show(&mut self, ui: &mut Ui) {
         ui.horizontal(|ui| {
             ui.text_edit_singleline(&mut self.output);
             let button = ui.button("Pick File");
@@ -143,16 +143,16 @@ impl MainApp {
 }
 
 impl App for MainApp {
-    fn update(&mut self, ctx: &eframe::egui::Context, _frame: &mut eframe::Frame) {
-        CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut eframe::egui::Ui, _frame: &mut eframe::Frame) {
+        CentralPanel::default().show(ui, |ui| {
             ui.heading("rbxlx to Rojo");
             ui.add_space(5.0);
             ui.label("rbxlx File");
-            self.input.show(ctx, ui);
+            self.input.ui(ui);
             ui.add_space(10.0);
 
             ui.label("Directory Output");
-            self.output.show(ctx, ui);
+            self.output.show(ui);
             ui.add_space(2.0);
             ui.label("This will create or use an existing directory in that output directory named by the rbxlx file");
             ui.add_space(10.0);
