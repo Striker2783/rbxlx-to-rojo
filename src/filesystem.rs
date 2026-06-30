@@ -1,4 +1,5 @@
 use crate::structures::*;
+use log::warn;
 use serde::{ser::SerializeMap, Serialize, Serializer};
 use std::{
     collections::BTreeMap,
@@ -85,30 +86,45 @@ impl InstructionReader for FileSystem {
             }
 
             Instruction::CreateFile { filename, contents } => {
-                let mut file = File::create(self.source.join(&filename)).unwrap_or_else(|error| {
-                    panic!("can't create file {:?}: {:?}", filename, error)
-                });
-                file.write_all(&contents).unwrap_or_else(|error| {
-                    panic!("can't write to file {:?} due to {:?}", filename, error)
-                });
+                let path = self.source.join(&filename);
+                let mut file = match File::create(&path) {
+                    Ok(file) => file,
+                    Err(error) => {
+                        warn!("Couldn't create file {:?}: {:?}", filename, error);
+                        return;
+                    }
+                };
+                if let Err(error) = file.write_all(&contents) {
+                    warn!("Couldn't write to file {:?}: {:?}", filename, error);
+                }
             }
 
             Instruction::CreateFolder { folder } => {
-                fs::create_dir_all(self.source.join(&folder)).unwrap_or_else(|error| {
-                    panic!("can't write to folder {:?}: {:?}", folder, error)
-                });
+                if let Err(error) = fs::create_dir_all(self.source.join(&folder)) {
+                    warn!("Couldn't create folder {:?}: {:?}", folder, error);
+                }
             }
         }
     }
 
     fn finish_instructions(&mut self) {
-        let mut file = File::create(self.root.join("default.project.json"))
-            .expect("can't create default.project.json");
-        file.write_all(
-            serde_json::to_string_pretty(&self.project)
-                .expect("couldn't serialize project")
-                .as_bytes(),
-        )
-        .expect("can't write project");
+        let project_path = self.root.join("default.project.json");
+        let mut file = match File::create(&project_path) {
+            Ok(file) => file,
+            Err(error) => {
+                warn!("Couldn't create default.project.json: {:?}", error);
+                return;
+            }
+        };
+        let json = match serde_json::to_string_pretty(&self.project) {
+            Ok(json) => json,
+            Err(error) => {
+                warn!("Couldn't serialize project: {:?}", error);
+                return;
+            }
+        };
+        if let Err(error) = file.write_all(json.as_bytes()) {
+            warn!("Couldn't write to default.project.json: {:?}", error);
+        }
     }
 }
