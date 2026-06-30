@@ -54,11 +54,17 @@ impl PickInput {
                     }
                 });
             }
-            if let Some(rx) = &mut self.rx
-                && let Ok(p) = rx.try_recv()
-            {
-                self.rx = None;
-                self.input = p.to_string_lossy().to_string();
+            if let Some(rx) = &mut self.rx {
+                match rx.try_recv() {
+                    Ok(p) => {
+                        self.rx = None;
+                        self.input = p.to_string_lossy().to_string();
+                    }
+                    Err(mpsc::TryRecvError::Disconnected) => {
+                        self.rx = None;
+                    }
+                    Err(mpsc::TryRecvError::Empty) => {}
+                }
             }
         });
     }
@@ -84,10 +90,17 @@ impl PickOutput {
                     };
                 });
             }
-            if let Some(rx) = &mut self.rx
-                && let Ok(p) = rx.try_recv()
-            {
-                self.output = p.to_string_lossy().to_string();
+            if let Some(rx) = &mut self.rx {
+                match rx.try_recv() {
+                    Ok(p) => {
+                        self.rx = None;
+                        self.output = p.to_string_lossy().to_string();
+                    }
+                    Err(mpsc::TryRecvError::Disconnected) => {
+                        self.rx = None;
+                    }
+                    Err(mpsc::TryRecvError::Empty) => {}
+                }
             }
         });
     }
