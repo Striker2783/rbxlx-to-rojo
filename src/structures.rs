@@ -80,11 +80,11 @@ impl<'a> std::fmt::Debug for Instruction<'a> {
             }
             Self::CreateFile { filename, contents: _ } => f
                 .debug_struct("CreateFile")
-                .field("filename", filename)
+                .field("filename", &filename.display())
                 .finish(),
             Self::CreateFolder { folder } => f
                 .debug_struct("CreateFolder")
-                .field("folder", folder)
+                .field("folder", &folder.display())
                 .finish(),
         }
     }

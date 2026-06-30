@@ -90,18 +90,18 @@ impl InstructionReader for FileSystem {
                 let mut file = match File::create(&path) {
                     Ok(file) => file,
                     Err(error) => {
-                        warn!("Couldn't create file {:?}: {:?}", filename, error);
+                        warn!("Couldn't create file {}: {}", filename.display(), error);
                         return;
                     }
                 };
                 if let Err(error) = file.write_all(&contents) {
-                    warn!("Couldn't write to file {:?}: {:?}", filename, error);
+                    warn!("Couldn't write to file {}: {}", filename.display(), error);
                 }
             }
 
             Instruction::CreateFolder { folder } => {
                 if let Err(error) = fs::create_dir_all(self.source.join(&folder)) {
-                    warn!("Couldn't create folder {:?}: {:?}", folder, error);
+                    warn!("Couldn't create folder {}: {}", folder.display(), error);
                 }
             }
         }
