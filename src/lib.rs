@@ -43,7 +43,7 @@ fn repr_instance<'a>(
 
     match child.class.as_str() {
         "Folder" => {
-            info!("Instruction: Adding Folder {:?}/{}", base, child.name);
+            info!("Instruction: Adding Folder {}/{}", base.display(), child.name);
             let folder_path = base.join(&child.name);
             let owned: Cow<'a, Path> = Cow::Owned(folder_path);
             let clone = owned.clone();
@@ -69,7 +69,7 @@ fn repr_instance<'a>(
         }
 
         "Script" | "LocalScript" | "ModuleScript" => {
-            info!("Instruction: Adding {} {:?}/{}", child.class.as_str(), base, child.name);
+            info!("Instruction: Adding {} {}/{}", child.class.as_str(), base.display(), child.name);
             let extension = match child.class.as_str() {
                 "Script" => ".server",
                 "LocalScript" => ".client",
@@ -180,7 +180,7 @@ fn repr_instance<'a>(
         }
 
         other_class => {
-            info!("Instruction: Adding metadata {:?}/{}", base, child.name);
+            info!("Instruction: Adding metadata {}/{}", base.display(), child.name);
             // When all else fails, we can make a meta folder if there's scripts in it
             let database = rbx_reflection_database::get().expect("Could Not Find Reflect Database");
             match database.classes.get(other_class) {
@@ -347,11 +347,12 @@ fn check_has_scripts(
             }
         };
 
+        let prefix = format!("{}/{}", name, instance.name);
         let result = check_has_scripts(
             tree,
             child,
             has_scripts,
-            format!("{}/{}", name, instance.name),
+            prefix.trim_start_matches('/').to_string(),
         );
 
         children_have_scripts = children_have_scripts || result;
