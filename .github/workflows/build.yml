@@ -24,7 +24,7 @@ jobs:
     name: Build ${{matrix.os}}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v7.0.0
       - name: Install Rust
         if: runner.os == 'Linux' || runner.os == 'macOS'
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Test
         run: cargo test --all --verbose
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: ${{matrix.name}}
           path: ./target/release/${{matrix.path}}
