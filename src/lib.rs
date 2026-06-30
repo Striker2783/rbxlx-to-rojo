@@ -1,4 +1,4 @@
-use log::{debug, info};
+use log::{debug, info, warn};
 use rbx_dom_weak::{
     Instance, WeakDom,
     types::{Ref, Variant},
@@ -77,11 +77,16 @@ fn repr_instance<'a>(
                 _ => unreachable!(),
             };
 
-            let source = match child.properties.get(&ustr("Source")).expect("no Source") {
-                Variant::String(value) => value,
-                _ => unreachable!(),
-            }
-            .as_bytes();
+            let source = match child.properties.get(&ustr("Source")) {
+                Some(Variant::String(value)) => value.as_bytes(),
+                _ => {
+                    warn!(
+                        "Skipping {} '{}' - no valid Source property found",
+                        child.class, child.name
+                    );
+                    return None;
+                }
+            };
 
             if child.children().is_empty() {
                 Some((
@@ -248,7 +253,16 @@ fn repr_instance<'a>(
 impl<'a, I: InstructionReader + ?Sized> TreeIterator<'a, I> {
     fn visit_instructions(&mut self, instance: &Instance, has_scripts: &HashMap<Ref, bool>) {
         for child_id in instance.children() {
-            let child = self.tree.get_by_ref(*child_id).expect("got fake child id?");
+            let child = match self.tree.get_by_ref(*child_id) {
+                Some(child) => child,
+                None => {
+                    warn!(
+                        "Skipping invalid child reference in {} (class: {})",
+                        instance.name, instance.class
+                    );
+                    continue;
+                }
+            };
 
             let (instructions_to_create_base, path) = if child.class == "StarterPlayer" {
                 info!("Adding instructions for StarterPlayer");
@@ -321,9 +335,21 @@ fn check_has_scripts(
     let mut children_have_scripts = false;
 
     for child_id in instance.children() {
+        let child = match tree.get_by_ref(*child_id) {
+            Some(child) => child,
+            None => {
+                warn!(
+                    "Skipping invalid child reference in {}/{} (class: {})",
+                    name, instance.name, instance.class
+                );
+                has_scripts.insert(*child_id, false);
+                continue;
+            }
+        };
+
         let result = check_has_scripts(
             tree,
-            tree.get_by_ref(*child_id).expect("fake child id?"),
+            child,
             has_scripts,
             format!("{}/{}", name, instance.name),
         );
