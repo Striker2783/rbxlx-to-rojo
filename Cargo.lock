@@ -2911,7 +2911,7 @@ dependencies = [
  "lz4_flex",
  "profiling",
  "rbx_dom_weak",
- "rbx_reflection",
+ "rbx_reflection 6.1.0",
  "rbx_reflection_database",
  "thiserror 1.0.69",
  "zstd",
@@ -2941,6 +2941,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "rbx_reflection"
+version = "7.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f53e5c4cf136060f7c514bd4d6f02436a57e36754c544965a7840123bc662d7"
+dependencies = [
+ "rbx_types",
+ "serde",
+ "thiserror 1.0.69",
+]
+
+[[package]]
 name = "rbx_reflection_database"
 version = "2.0.2+roblox-700"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2948,7 +2959,7 @@ checksum = "de2753b896d08d74316d8b89fbeb2470ebd3986404ebba82fa85fcc0330955cf"
 dependencies = [
  "dirs",
  "log",
- "rbx_reflection",
+ "rbx_reflection 6.1.0",
  "rmp-serde",
  "serde",
 ]
@@ -2978,7 +2989,7 @@ dependencies = [
  "base64",
  "log",
  "rbx_dom_weak",
- "rbx_reflection",
+ "rbx_reflection 6.1.0",
  "rbx_reflection_database",
  "xml-rs",
 ]
@@ -2994,7 +3005,7 @@ dependencies = [
  "pretty_assertions",
  "rbx_binary",
  "rbx_dom_weak",
- "rbx_reflection",
+ "rbx_reflection 7.0.0",
  "rbx_reflection_database",
  "rbx_xml",
  "rfd",

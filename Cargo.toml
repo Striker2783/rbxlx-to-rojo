@@ -18,7 +18,7 @@ lazy_static = "1.4"
 log = "0.4.33"
 rbx_binary = "2.0.1"
 rbx_dom_weak = "4.1.0"
-rbx_reflection = "6.1.0"
+rbx_reflection = "7.0.0"
 rbx_reflection_database = "2.0.2"
 rbx_xml = "2.0.1"
 serde = { version = "1.0.228", features = ["derive"] }
